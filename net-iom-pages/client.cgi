@@ -1,5 +1,5 @@
 ---%99
-# $Id: client.cgi 00 2007-12-28 02:36:48Z adamc $
+# $Id$
 %99
 analogue:%99
   input:%99
