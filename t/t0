@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Perl6::Say;
+
+use Data::Dumper;
+
+use NETIOM;
+
+my $test_unit = NETIOM->new('netiom01');
+
+# print Dumper $test_unit;
+
+say 'Input bitmap  : ' . $test_unit->get_output_bitmap();
+say 'Input int     : ' . $test_unit->get_output_bitmap_int();
+
+say 'Output bitmap : ' . $test_unit->get_input_bitmap();
+say 'Output int    : ' . $test_unit->get_input_bitmap_int();
+
+say 'Analogue array: ' . join ', ', $test_unit->get_analogue_input();
+
+say 'Analogue 2    : ' . $test_unit->get_analogue_input(2);
+
+eval { say 'Analogue 7    : ' . $test_unit->get_analogue_input(7); };
+say $@;
+
+say 'Serial        : ' . $test_unit->get_input_serial();
+
+say 'Unit Name     : ' . $test_unit->get_unit_name();
