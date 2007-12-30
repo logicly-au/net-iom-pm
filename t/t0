@@ -1,23 +1,46 @@
 #!/usr/bin/perl
 
+use lib '../lib';
+
 use strict;
 use warnings;
 
 use Perl6::Say;
 
-use Data::Dumper;
-
 use NETIOM;
 
 my $test_unit = NETIOM->new('netiom01');
 
-# print Dumper $test_unit;
+say 'Input bitmap  : ' . $test_unit->get_input_bitmap();
+say 'Input int     : ' . $test_unit->get_input_bitmap_int();
+say 'Input bit 5   : ' . $test_unit->get_input_bit(5);
 
-say 'Input bitmap  : ' . $test_unit->get_output_bitmap();
-say 'Input int     : ' . $test_unit->get_output_bitmap_int();
+my $o16 = $test_unit->get_output_bit(16);
+say 'Output bitmap : ' . $test_unit->get_output_bitmap();
+say 'Set output 16 to 1. 16 = ' . $test_unit->set_output_bit( 16, 1 );
+say 'Output array  : ' . join ', ', $test_unit->get_output();
+say 'Output bitmap : ' . $test_unit->get_output_bitmap();
+say 'Set output 16 to 0. 16 = ' . $test_unit->set_output_bit( 16, 0 );
+say 'Output bitmap : ' . $test_unit->get_output_bitmap();
+say 'Output array  : ' . join ', ', $test_unit->get_output();
+say 'Output int    : ' . $test_unit->get_output_bitmap_int();
 
-say 'Output bitmap : ' . $test_unit->get_input_bitmap();
-say 'Output int    : ' . $test_unit->get_input_bitmap_int();
+# Put 16 back the way it was
+$test_unit->set_output_bit( 16, $o16 );
+
+my @oarray = $test_unit->get_output();
+say 'Set output from array : ' . join ', ',
+  $test_unit->set_output( 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 );
+say 'Output array  : ' . join ', ',         $test_unit->get_output();
+say 'Set output from array : ' . join ', ', $test_unit->set_output(@oarray);
+say 'Output array  : ' . join ', ',         $test_unit->get_output();
+
+my $ostr = $test_unit->get_output_bitmap();
+say 'Set output from str : '
+  . $test_unit->set_output_bitmap('1010101010101010');
+say 'Output bitmap : ' . $test_unit->get_output_bitmap();
+say 'Set output from str : ' . $test_unit->set_output_bitmap($ostr);
+say 'Output bitmap : ' . $test_unit->get_output_bitmap();
 
 say 'Analogue array: ' . join ', ', $test_unit->get_analogue_input();
 
@@ -26,6 +49,6 @@ say 'Analogue 2    : ' . $test_unit->get_analogue_input(2);
 eval { say 'Analogue 7    : ' . $test_unit->get_analogue_input(7); };
 say $@;
 
-say 'Serial        : ' . $test_unit->get_input_serial();
+say 'Serial        : ' . $test_unit->get_serial();
 
 say 'Unit Name     : ' . $test_unit->get_unit_name();
