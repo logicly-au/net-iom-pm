@@ -14,7 +14,7 @@ use Carp;
 
 sub new {
 
-    my $proto     = shift;
+    my $class     = shift;
     my $unit_name = shift;
 
     my $self;
@@ -24,7 +24,7 @@ sub new {
 
     if ( _get_set_unit_state($self) ) {
 
-        return bless $self, $proto;
+        return bless $self, $class;
 
     }
     else {
@@ -114,9 +114,9 @@ sub set_output_bit {
 
     $output = sprintf( "%02d", $output );
 
-    my $uri = "$action$output=$set_to_state";
+    my $params = "$action$output=$set_to_state";
 
-    $self->_get_set_unit_state($uri);
+    $self->_get_set_unit_state($params);
 
     return $self->get_output_bit($output);
 }
