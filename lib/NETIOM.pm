@@ -56,6 +56,8 @@ sub set_output {
 
 sub get_output_bitmap {
     my $self = shift;
+    
+    $self->_get_set_unit_state();
 
     return $self->{state}{digital}{output}{bitmap};
 
@@ -123,6 +125,8 @@ sub set_output_bit {
 
 sub get_input_bitmap {
     my $self = shift;
+    
+    $self->_get_set_unit_state();
 
     return $self->{state}{digital}{input}{bitmap};
 
@@ -153,6 +157,8 @@ sub get_input_bit {
 sub get_analogue_input {
     my $self     = shift;
     my $input_no = shift;
+    
+    $self->_get_set_unit_state();
 
     if ( !$input_no ) {
         return (
@@ -171,11 +177,15 @@ sub get_analogue_input {
 sub get_serial {
     my $self = shift;
 
+    $self->_get_set_unit_state();
+
     return $self->{state}{serial}{input}{text};
 }
 
 sub set_serial {
     my $self = shift;
+    
+    $self->_get_set_unit_state();
 
     croak "Not implemented.";
 }
