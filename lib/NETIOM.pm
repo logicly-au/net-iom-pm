@@ -32,6 +32,13 @@ sub new {
     }
 }
 
+sub update_state {
+    my $self = shift;
+    
+    $self->_get_set_unit_state();
+    
+}
+
 sub get_output {
     my $self = shift;
 
@@ -56,8 +63,6 @@ sub set_output {
 
 sub get_output_bitmap {
     my $self = shift;
-    
-    $self->_get_set_unit_state();
 
     return $self->{state}{digital}{output}{bitmap};
 
@@ -125,8 +130,6 @@ sub set_output_bit {
 
 sub get_input_bitmap {
     my $self = shift;
-    
-    $self->_get_set_unit_state();
 
     return $self->{state}{digital}{input}{bitmap};
 
@@ -157,8 +160,6 @@ sub get_input_bit {
 sub get_analogue_input {
     my $self     = shift;
     my $input_no = shift;
-    
-    $self->_get_set_unit_state();
 
     if ( !$input_no ) {
         return (
@@ -177,15 +178,11 @@ sub get_analogue_input {
 sub get_serial {
     my $self = shift;
 
-    $self->_get_set_unit_state();
-
     return $self->{state}{serial}{input}{text};
 }
 
 sub set_serial {
     my $self = shift;
-    
-    $self->_get_set_unit_state();
 
     croak "Not implemented.";
 }
@@ -206,19 +203,19 @@ sub _get_set_unit_state {
         $uri .= "?$param_string";
     }
 
-    if ( my $state = _process_client_yaml( get($uri) ) ) {
+    for ( 1 .. 5 ) { # Try to get a response up to 5 times.
 
-        $self->{state} = $state;
+        if ( my $state = _process_client_yaml( get($uri) ) ) {
 
+            $self->{state} = $state;
+            
+            return 1;
+            
+        }
     }
-    else {
+    
+    croak "Did not get response from NET-IOM unit $self->{unit_name} when getting/setting state.";
 
-        croak
-"Did not get response from NET-IOM unit $self->{unit_name} when getting/setting state.";
-
-    }
-
-    return 1;
 }
 
 # Turns a string from the net-iom device representing the current output
