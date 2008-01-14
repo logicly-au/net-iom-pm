@@ -13,40 +13,49 @@ foreach my $unit ('netiom01', 'netiom02') {
 }
 
 system 'clear';
-   
-my $n=1;
-my $input_range = 'low';
+
 my $unit_index = 0;
 while ( 1 ) {
 
-    while ( my $key = ReadKey(-1) ) {
+    # my $key;
+    while ( defined ( my $key = ReadKey(-1) ) ) {
         if ( $key eq 'q' or $key eq 'Q') {
             exit 0;
         }
-        elsif ( $input_range eq 'low' && $key =~ m/[1-9]/ && $unit[$unit_index]->can('set_input_bit') ) {
+        elsif ( $key =~ m/[0-9a-f]/i && $unit[$unit_index]->can('set_input_bit') ) {
+            
+            if ( ! $key ) {
+                $key = 10;
+            }
+            elsif ( $key =~ m/[a-f]/i ){
+                $key = ord(uc($key))-54
+            }
+            
             $unit[$unit_index]->set_input_bit($key,$unit[$unit_index]->get_input_bit($key) ? 0 : 1);
-        }
-        elsif ( $input_range eq 'high' && $key =~ m/[1-6]/ && $unit[$unit_index]->can('set_input_bit') ) {
-            $unit[$unit_index]->set_input_bit($key+10,$unit[$unit_index]->get_input_bit($key+10) ? 0 : 1);
-        }
-        elsif ( $key =~ m/r/i ) {
-            $input_range = ($input_range eq 'high') ? 'low' : 'high';
         }
         elsif ( $key =~ m/u/i ) {
             $unit_index = ($unit_index) ? 0 : 1;
         }
     }
     
-    my $out = "       01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16\n";
+    my $out;
+    
     foreach my $unit (@unit) {
         $unit->update_state();
-        $out .= $unit->get_unit_name ."\n";
+        
+        if ( $unit eq $unit[$unit_index] && $unit[$unit_index]->can('set_input_bit') ) {
+            $out .= $unit[$unit_index]->get_unit_name() . " <-- Active unit for input, press u to toggle.\n";
+            $out .= "Press   1  2  3  4  5  6  7  8  9  0  A  B  C  D  E  F\n";
+            $out .= "       01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16\n";
+        }
+        else {
+            $out .= $unit->get_unit_name ."\n\n";
+            $out .= "       01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16\n";
+        }
         $out .= "Input   " . (join "  ", $unit->get_input()) . "\n";
-        $out .= "Output  " . (join "  ", $unit->get_output()). "\n";
+        $out .= "Output  " . (join "  ", $unit->get_output()). "\n\n";
     }
-    $out .= "Active Unit: " . $unit[$unit_index]->get_unit_name() . "\n";
-    $out .= "Input Range: " . (($input_range eq 'high') ? '[10..16]' : '[1..9]' ) . "\n"; 
-    $out .= "Iteration: " . $n++ . "\n";
+    $out .= "Press q to quit.\n";
     system 'clear';
     print $out;
     sleep 1;
