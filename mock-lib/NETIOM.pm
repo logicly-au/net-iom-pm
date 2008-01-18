@@ -16,6 +16,8 @@ sub new {
     my $unit_name = shift;
 
     my $self;
+    
+    $self->{mock} = 1;
 
     $self->{unit_name} = $unit_name;
     
@@ -27,6 +29,10 @@ sub new {
         
         $dbfile = $ENV{NET_IOM_DB_PATH} . "/net-iom.db";
     }
+    
+    $self->{dbfile} = $dbfile;
+    
+    print "NET-IOM unit $unit_name is mocking.\n  dbfile = " . $self->{dbfile} . ", " . ($ENV{NET_IOM_DB_PATH} ? "NET_IOM_DB_PATH = $ENV{NET_IOM_DB_PATH}" : '') . "\n";
     
     my $create_db = ( ! -f $dbfile );
     
