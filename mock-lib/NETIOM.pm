@@ -145,6 +145,8 @@ sub new {
 
     bless $self, $class;
     
+    $self->update_state();
+    
     return $self;
 
 #    }
@@ -154,9 +156,54 @@ sub new {
 }
 
 sub update_state {
+    
     my $self = shift;
     
-    # $self->_get_set_unit_state();
+    $self->{output_bitmap} = join '', $self->{dbh}->selectrow_array( 
+        q(
+            select 
+            output01,
+            output02,
+            output03,
+            output04,
+            output05,
+            output06,
+            output07,
+            output08,
+            output09,
+            output10,
+            output11,
+            output12,
+            output13,
+            output14,
+            output15,
+            output16 
+            from unit_state where unit = ?
+        ), {}, $self->{unit_name}
+    );
+    
+    $self->{input_bitmap} = join '', $self->{dbh}->selectrow_array( 
+        q(
+            select 
+            input01,
+            input02,
+            input03,
+            input04,
+            input05,
+            input06,
+            input07,
+            input08,
+            input09,
+            input10,
+            input11,
+            input12,
+            input13,
+            input14,
+            input15,
+            input16 
+            from unit_state where unit = ?
+        ), {}, $self->{unit_name}
+    );
     
 }
 
@@ -184,29 +231,9 @@ sub set_output {
 
 sub get_output_bitmap {
     my $self = shift;
-
-    return join '', $self->{dbh}->selectrow_array( 
-        q(
-            select 
-            output01,
-            output02,
-            output03,
-            output04,
-            output05,
-            output06,
-            output07,
-            output08,
-            output09,
-            output10,
-            output11,
-            output12,
-            output13,
-            output14,
-            output15,
-            output16 
-            from unit_state where unit = ?
-        ), {}, $self->{unit_name}
-    );
+    
+    return $self->{output_bitmap};
+    
 }
 
 sub set_output_bitmap {
@@ -241,6 +268,7 @@ sub get_output_bit {
         return $output_array[ $output - 1 ];
     }
     else {
+        
         return @output_array;
     }
 }
@@ -249,6 +277,8 @@ sub set_output_bit {
     my $self         = shift;
     my $output       = shift;
     my $set_to_state = shift;
+    
+    # warn $set_to_state;
 
     if ($set_to_state) {
         $set_to_state = 1;
@@ -262,7 +292,7 @@ sub set_output_bit {
     my $params = "update unit_state set output$output = ? where unit = ?;";
 
     $self->{dbh}->do( $params, {}, $set_to_state, $self->get_unit_name() );
-
+    
     return $self->get_output_bit($output);
 }
 
@@ -291,28 +321,7 @@ sub set_input_bit {
 sub get_input_bitmap {
     my $self = shift;
 
-    return join '', $self->{dbh}->selectrow_array( 
-        q(
-            select 
-            input01,
-            input02,
-            input03,
-            input04,
-            input05,
-            input06,
-            input07,
-            input08,
-            input09,
-            input10,
-            input11,
-            input12,
-            input13,
-            input14,
-            input15,
-            input16 
-            from unit_state where unit = ?
-        ), {}, $self->{unit_name}
-    );
+    return $self->{input_bitmap};
 }
 
 sub get_input_bitmap_int {
