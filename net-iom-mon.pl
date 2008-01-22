@@ -54,6 +54,10 @@ while ( 1 ) {
                 $unit[$unit_index]->set_output_bit($key, $unit[$unit_index]->get_output_bit($key) ? 0 : 1);
             }
         }
+        elsif ( $key =~ m/[l]/i ) {
+            $state_log = '';
+            foreach ( @unit ) { $_->{logged} = 0 };
+        }        
         elsif ( $key =~ m/u/i ) {
             $unit_index = ($unit_index) ? 0 : 1;
         }
@@ -110,7 +114,6 @@ while ( 1 ) {
     $out .= "Press q to quit.\n";
     system 'clear';
     print $out;
-    print "\nInput log: 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 time\n" if $logging;
-    print $state_log if $logging;
+    print "\nInput log: 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 time\n$state_log" if $logging;
     sleep 1;
 }
