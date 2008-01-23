@@ -7,6 +7,7 @@ use warnings;
 
 use Carp;
 use DBI;
+use Cwd;
 
 # use Data::Dumper;
 
@@ -32,7 +33,7 @@ sub new {
     
     $self->{dbfile} = $dbfile;
     
-    print "NET-IOM unit $unit_name is mocking.\n  dbfile = " . $self->{dbfile} . ", " . ($ENV{NET_IOM_DB_PATH} ? "NET_IOM_DB_PATH = $ENV{NET_IOM_DB_PATH}" : '') . "\n";
+    print "NET-IOM unit $unit_name is mocking. Path to db = " . ( defined $ENV{NET_IOM_DB_PATH} ? $ENV{NET_IOM_DB_PATH} : getcwd()) . ( defined $ENV{NET_IOM_DB_PATH} ? '. Using' : '. NOT using') .  " NET_IOM_DB_PATH.\n";
     
     my $create_db = ( ! -f $dbfile );
     
