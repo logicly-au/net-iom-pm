@@ -3,9 +3,10 @@
 use strict;
 use warnings;
 
-use NETIOM;
 use Getopt::Long;
 use Term::ReadKey;
+use Time::HiRes qw(sleep);
+use NETIOM;
 
 my $logging = 0;
 
@@ -115,5 +116,5 @@ while ( 1 ) {
     system 'clear';
     print $out;
     print "\nInput log: 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 time\n$state_log" if $logging;
-    sleep 1;
+    sleep .1;
 }
