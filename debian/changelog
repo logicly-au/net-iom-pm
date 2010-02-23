@@ -1,0 +1,5 @@
+libnetiom-perl (1-1) stable; urgency=low
+
+  * Initial Release packaged for Debian.
+
+ -- Daniel Pittman <daniel@strategicdata.com.au>  Fri, 19 Feb 2010 18:20:42 +1100

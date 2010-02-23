@@ -1,0 +1,13 @@
+Source: libnetiom-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 7)
+Build-Depends-Indep: perl (>= 5.8.1)
+Maintainer: Daniel Pittman <daniel@rimspace.net>
+Standards-Version: 3.8.4
+
+Package: libnetiom-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}
+Description: Strategic Data Office Automation backend module.
+ Our private office automation server, backend module.
