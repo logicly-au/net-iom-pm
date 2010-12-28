@@ -2,6 +2,8 @@
 
 package NETIOM;
 
+use 5.008003;
+
 use strict;
 use warnings;
 
@@ -11,6 +13,8 @@ use LWP::Simple;
 use Carp;
 
 # use Data::Dumper;
+
+our $VERSION = '0.10';
 
 sub new {
 
@@ -257,3 +261,34 @@ sub _process_client_yaml {
 }
 
 1;
+
+=encoding utf8
+
+=head1 NAME
+
+NETIOM - Interact with NETIOM™ devices.
+
+=head1 SYNOPSIS
+
+    use NETIOM;
+
+=head1 DESCRIPTION
+
+NETIOM is a stand alone WEB server capable of monitoring 16 digital and
+4 analogue inputs. It can also control 16 digital outputs.
+
+=head1 AUTHOR
+
+Adam Clarke <adamc@cpan.org>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2010. Adam Clarke.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+See http://www.perl.com/perl/misc/Artistic.html
+
+=cut
+

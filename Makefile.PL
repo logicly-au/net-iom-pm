@@ -2,9 +2,18 @@ use strict;
 use warnings;
 use inc::Module::Install;
 
-name            'NETIOM';
 all_from        'lib/NETIOM.pm';
 
-install_script  'script/net-iom-mon.pl';
+readme_from;
+
+manifest_skip;
+
+version_check;
+
+requires 'YAML';
+requires 'LWP::Simple';
+requires 'Term::ReadKey';
+
+install_script  'script/net-iom-mon';
 
 WriteAll;
